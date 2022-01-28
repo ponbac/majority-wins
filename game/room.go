@@ -6,10 +6,10 @@ import (
 )
 
 type Room struct {
-	ID              string           `json:"id"`
-	Players         map[*Player]bool 
-	Questions       []Question       `json:"questions"`
-	CurrentQuestion int              `json:"current_question"`
+	ID              string
+	Players         map[*Player]bool
+	Questions       []Question
+	CurrentQuestion int
 
 	// Inbound messages from the clients.
 	broadcast chan []byte
@@ -20,10 +20,10 @@ type Room struct {
 }
 
 type JSONRoom struct {
-	ID              string           `json:"id"`
-	Players         []*JSONPlayer        `json:"players"`
-	Questions       []Question       `json:"questions"`
-	CurrentQuestion int              `json:"current_question"`
+	ID              string        `json:"id"`
+	Players         []*JSONPlayer `json:"players"`
+	Questions       []Question    `json:"questions"`
+	CurrentQuestion int           `json:"current_question"`
 }
 
 func NewRoom() *Room {
@@ -55,6 +55,7 @@ func (r *Room) ToJSON() []byte {
 func (r *Room) AddPlayer(player *Player) {
 	r.Players[player] = true
 	fmt.Println("Added " + player.Name + " to room " + r.ID)
+	r.BroadcastRoomState()
 }
 
 func (r *Room) RemovePlayer(player *Player) {
@@ -62,6 +63,7 @@ func (r *Room) RemovePlayer(player *Player) {
 		delete(r.Players, player)
 		close(player.send)
 		fmt.Println("Removed " + player.Name + " from room " + r.ID)
+		r.BroadcastRoomState()
 	}
 }
 
@@ -72,6 +74,17 @@ func (r *Room) NextQuestion() *Question {
 	r.CurrentQuestion++
 
 	return &r.Questions[r.CurrentQuestion]
+}
+
+func (r *Room) BroadcastRoomState() {
+	for player := range r.Players {
+		select {
+		case player.send <- r.ToJSON():
+		default:
+			close(player.send)
+			delete(r.Players, player)
+		}
+	}
 }
 
 func (r *Room) Run() {

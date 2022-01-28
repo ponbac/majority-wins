@@ -33,8 +33,8 @@ var upgrader = websocket.Upgrader{
 }
 
 type Player struct {
-	Name  string `json:"name"`
-	Score int    `json:"score"`
+	Name  string
+	Score int
 	Room  *Room
 	Conn  *websocket.Conn
 	send  chan []byte
