@@ -3,6 +3,7 @@ package game
 import (
 	"encoding/json"
 	"fmt"
+	"time"
 )
 
 type Room struct {
@@ -10,6 +11,8 @@ type Room struct {
 	Players         map[*Player]bool
 	Questions       []Question
 	CurrentQuestion int
+	// 0 = not started, 1 = question time, 2 = question results, 3 = game over
+	Scene int
 
 	// Inbound messages from the clients.
 	broadcast chan []byte
@@ -20,10 +23,11 @@ type Room struct {
 }
 
 type JSONRoom struct {
-	ID              string        `json:"id"`
-	Players         []*JSONPlayer `json:"players"`
-	Questions       []Question    `json:"questions"`
-	CurrentQuestion int           `json:"current_question"`
+	ID              string          `json:"id"`
+	Players         []*JSONPlayer   `json:"players"`
+	Questions       []*JSONQuestion `json:"questions"`
+	CurrentQuestion int             `json:"current_question"`
+	Scene           int             `json:"scene"`
 }
 
 func NewRoom() *Room {
@@ -35,14 +39,18 @@ func NewRoom() *Room {
 		ID:              "1337",
 		Questions:       []Question{},
 		CurrentQuestion: 0,
+		Scene:           0,
 	}
 }
 
 func (r *Room) ToJSON() []byte {
-	jsonRoom := &JSONRoom{ID: r.ID, Players: []*JSONPlayer{}, Questions: r.Questions, CurrentQuestion: r.CurrentQuestion}
+	jsonRoom := &JSONRoom{ID: r.ID, Players: []*JSONPlayer{}, Questions: []*JSONQuestion{}, CurrentQuestion: r.CurrentQuestion, Scene: r.Scene}
 
 	for player := range r.Players {
 		jsonRoom.Players = append(jsonRoom.Players, player.ToJSONPlayer())
+	}
+	for _, question := range r.Questions {
+		jsonRoom.Questions = append(jsonRoom.Questions, question.ToJSONQuestion())
 	}
 
 	b, err := json.Marshal(jsonRoom)
@@ -84,6 +92,39 @@ func (r *Room) BroadcastRoomState() {
 			close(player.send)
 			delete(r.Players, player)
 		}
+	}
+}
+
+func (r *Room) StartGame() {
+	r.Scene = 1
+	r.BroadcastRoomState()
+
+	prevScene := 0
+	for {
+		if r.Scene != prevScene {
+			switch r.Scene {
+			// Question time
+			case 1:
+				prevScene = 1
+				fmt.Println("Starting question " + r.Questions[r.CurrentQuestion].Description)
+			// Question results
+			case 2:
+				prevScene = 2
+				fmt.Println("Question results")
+				time.Sleep(time.Second * 5)
+				if r.NextQuestion() == nil {
+					r.Scene = 3
+				} else {
+					r.Scene = 1
+				}
+			// Game over
+			case 3:
+				prevScene = 3
+				fmt.Println("Game over")
+			}
+			r.BroadcastRoomState()
+		}
+		time.Sleep(1 * time.Second)
 	}
 }
 

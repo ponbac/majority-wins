@@ -45,8 +45,29 @@ type JSONPlayer struct {
 	Score int    `json:"score"`
 }
 
+type PlayerAction struct {
+	Action string `json:"action"`
+	Value  int    `json:"value"`
+}
+
 func (p *Player) ToJSONPlayer() *JSONPlayer {
 	return &JSONPlayer{Name: p.Name, Score: p.Score}
+}
+
+func (p *Player) Vote(vote int) {
+	question := &p.Room.Questions[p.Room.CurrentQuestion]
+	if _, ok := question.Answers[p]; !ok && p.Room.Scene == 1 {
+		if p.Room.CurrentQuestion >= len(p.Room.Questions) {
+			return
+		}
+
+		question.Answers[p] = vote
+
+		if len(question.Answers) == len(p.Room.Players) {
+			p.Room.Scene = 2
+		}
+		p.Room.BroadcastRoomState()
+	}
 }
 
 // readPump pumps messages from the websocket connection to the hub.
@@ -63,15 +84,20 @@ func (p *Player) readPump() {
 	p.Conn.SetReadDeadline(time.Now().Add(pongWait))
 	p.Conn.SetPongHandler(func(string) error { p.Conn.SetReadDeadline(time.Now().Add(pongWait)); return nil })
 	for {
-		_, message, err := p.Conn.ReadMessage()
+		action := PlayerAction{}
+		err := p.Conn.ReadJSON(&action)
 		if err != nil {
 			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
 				log.Printf("error: %v", err)
 			}
+			log.Printf("error: %v", err)
 			break
 		}
-		fmt.Println(p.Name + " sent message: " + string(message))
-		p.Room.broadcast <- p.Room.ToJSON()
+		fmt.Println(p.Name + " performed action {" + action.Action + "} with value " + fmt.Sprint(action.Value))
+		if action.Action == "Vote" {
+			p.Vote(action.Value)
+		}
+		//p.Room.broadcast <- p.Room.ToJSON()
 	}
 }
 
