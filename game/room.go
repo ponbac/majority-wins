@@ -9,7 +9,7 @@ import (
 type Room struct {
 	ID              string
 	Players         map[*Player]bool
-	Questions       []Question
+	Questions       []*Question
 	CurrentQuestion int
 	// 0 = not started, 1 = question time, 2 = question results, 3 = game over
 	Scene int
@@ -30,14 +30,14 @@ type JSONRoom struct {
 	Scene           int             `json:"scene"`
 }
 
-func NewRoom() *Room {
+func NewRoom(roomID string) *Room {
 	return &Room{
 		broadcast:       make(chan []byte),
 		register:        make(chan *Player),
 		unregister:      make(chan *Player),
 		Players:         make(map[*Player]bool),
-		ID:              "1337",
-		Questions:       []Question{},
+		ID:              roomID,
+		Questions:       []*Question{},
 		CurrentQuestion: 0,
 		Scene:           0,
 	}
@@ -81,7 +81,16 @@ func (r *Room) NextQuestion() *Question {
 	}
 	r.CurrentQuestion++
 
-	return &r.Questions[r.CurrentQuestion]
+	return r.Questions[r.CurrentQuestion]
+}
+
+func (r *Room) ResetGame() {
+	r.Scene = 1
+	r.CurrentQuestion = 0
+	for _, question := range r.Questions {
+		question.Answers = make(map[*Player]int)
+	}
+	//r.BroadcastRoomState()
 }
 
 func (r *Room) BroadcastRoomState() {
@@ -119,7 +128,7 @@ func (r *Room) StartGame() {
 				fmt.Println("Question results")
 				r.Questions[r.CurrentQuestion].AwardScores()
 				r.BroadcastRoomState()
-				time.Sleep(time.Second * 10)
+				time.Sleep(time.Second * 3)
 				if r.NextQuestion() == nil {
 					r.Scene = 3
 				} else {
@@ -129,11 +138,12 @@ func (r *Room) StartGame() {
 			case 3:
 				prevScene = 3
 				fmt.Println("Game over")
-
+				time.Sleep(time.Second * 5)
+				r.ResetGame()
 			}
 			r.BroadcastRoomState()
 		}
-		time.Sleep(1 * time.Second)
+		time.Sleep(500 * time.Millisecond)
 	}
 }
 

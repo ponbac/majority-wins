@@ -55,7 +55,7 @@ func (p *Player) ToJSONPlayer() *JSONPlayer {
 }
 
 func (p *Player) Vote(vote int) {
-	question := &p.Room.Questions[p.Room.CurrentQuestion]
+	question := p.Room.Questions[p.Room.CurrentQuestion]
 	if _, ok := question.Answers[p]; !ok && p.Room.Scene == 1 {
 		if p.Room.CurrentQuestion >= len(p.Room.Questions) {
 			return
