@@ -16,8 +16,8 @@ func main() {
 		port = "8080"
 	}
 	room := game.NewRoom()
-	room.Questions = []game.Question{{Type: "Music", Description: "1 or 2, little human?", Answers: make(map[*game.Player]int)},
-		{Type: "Trivia", Description: "Is KalleK strong 1=YES, 2=NO?", Answers: make(map[*game.Player]int)}}
+	room.Questions = []game.Question{{Type: "Music", Description: "1 or 2, little human?", Answers: make(map[*game.Player]int), Reward: 2},
+		{Type: "Trivia", Description: "Is KalleK strong 1=YES, 2=NO?", Answers: make(map[*game.Player]int), Reward: 2}}
 	go room.Run()
 	go room.StartGame()
 	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {

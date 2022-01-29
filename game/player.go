@@ -62,11 +62,6 @@ func (p *Player) Vote(vote int) {
 		}
 
 		question.Answers[p] = vote
-
-		if len(question.Answers) == len(p.Room.Players) {
-			p.Room.Scene = 2
-		}
-		p.Room.BroadcastRoomState()
 	}
 }
 

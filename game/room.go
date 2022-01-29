@@ -101,6 +101,12 @@ func (r *Room) StartGame() {
 
 	prevScene := 0
 	for {
+		// Move to results screen if every player has answered
+		if len(r.Questions[r.CurrentQuestion].Answers) == len(r.Players) && r.Scene == 1 && len(r.Players) > 0 { // TODO: Remove len(r.Players) > 0
+			r.Scene = 2
+			//r.BroadcastRoomState()
+		}
+		// If scene has changed, broadcast the new scene
 		if r.Scene != prevScene {
 			switch r.Scene {
 			// Question time
@@ -111,7 +117,9 @@ func (r *Room) StartGame() {
 			case 2:
 				prevScene = 2
 				fmt.Println("Question results")
-				time.Sleep(time.Second * 5)
+				r.Questions[r.CurrentQuestion].AwardScores()
+				r.BroadcastRoomState()
+				time.Sleep(time.Second * 10)
 				if r.NextQuestion() == nil {
 					r.Scene = 3
 				} else {
@@ -121,6 +129,7 @@ func (r *Room) StartGame() {
 			case 3:
 				prevScene = 3
 				fmt.Println("Game over")
+
 			}
 			r.BroadcastRoomState()
 		}
