@@ -143,14 +143,17 @@ func (p *Player) writePump() {
 }
 
 // serveWs handles websocket requests from the peer.
-func ServeWs(room *Room, w http.ResponseWriter, r *http.Request) {
+func ServeWs(room *Room, playerName string, w http.ResponseWriter, r *http.Request) {
 	upgrader.CheckOrigin = func(r *http.Request) bool { return true }
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		log.Println(err)
 		return
 	}
-	player := &Player{Room: room, Score: 0, Conn: conn, send: make(chan []byte, 256), Name: "Player " + fmt.Sprint(len(room.Players)+1)}
+	if playerName == "" {
+		playerName = "Player " + fmt.Sprint(len(room.Players) + 1)
+	}
+	player := &Player{Room: room, Score: 0, Conn: conn, send: make(chan []byte, 256), Name: playerName}
 	player.Room.register <- player
 
 	// Allow collection of memory referenced by the caller by doing all work in
