@@ -64,6 +64,8 @@ func (p *Player) Vote(vote int) {
 		}
 
 		question.Answers[p] = vote
+		// TODO: Needed for seeing who voted?
+		p.Room.BroadcastRoomState()
 	}
 }
 
