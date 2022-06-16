@@ -52,7 +52,7 @@ func (q *Question) AwardScores() {
 		// Tie
 	} else {
 		for player := range q.Answers {
-			player.Score += q.Reward
+			player.Score += q.Reward / 2
 		}
 	}
 }
