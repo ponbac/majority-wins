@@ -118,6 +118,8 @@ func (r *Room) StartGame() {
 		// If scene has changed, broadcast the new scene
 		if r.Scene != prevScene {
 			switch r.Scene {
+			case 0:
+				prevScene = 0
 			// Question time
 			case 1:
 				prevScene = 1
@@ -138,9 +140,18 @@ func (r *Room) StartGame() {
 			case 3:
 				prevScene = 3
 				fmt.Println("Game over")
-				time.Sleep(time.Second * 5)
+				//time.Sleep(time.Second * 5)
 				r.ResetGame()
 			}
+			// TODO: Should it work like this?
+			if r.Scene == 0 {
+				fmt.Println("Quitting room " + r.ID)
+				for player := range r.Players {
+					r.RemovePlayer(player)
+				}
+				break
+			}
+			//fmt.Println("Broadcasting scene! curr: " + fmt.Sprint(r.Scene) + " prev: " + fmt.Sprint(prevScene))
 			r.BroadcastRoomState()
 		}
 		time.Sleep(500 * time.Millisecond)

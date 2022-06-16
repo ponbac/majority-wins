@@ -94,7 +94,9 @@ func (p *Player) readPump() {
 		if action.Action == "Vote" {
 			p.Vote(action.Value)
 		} else if action.Action == "Start" {
-			if p.IsLeader && p.Room.Scene == 0 {
+			// Leader can start the game if the game is not yet started
+			// or if the game is over.
+			if p.IsLeader && (p.Room.Scene == 0 || p.Room.Scene == 3) {
 				go p.Room.StartGame()
 			}
 		}
