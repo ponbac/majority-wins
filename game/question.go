@@ -3,20 +3,22 @@ package game
 type Question struct {
 	Type        string
 	Description string
+	Choices     []string
 	Answers     map[*Player]int
-	Reward	  int
+	Reward      int
 }
 
 type JSONQuestion struct {
 	Type        string        `json:"type"`
 	Description string        `json:"description"`
-	Reward 	int           `json:"reward"`
+	Choices     []string      `json:"choices"`
+	Reward      int           `json:"reward"`
 	GroupOne    []*JSONPlayer `json:"group_one"`
 	GroupTwo    []*JSONPlayer `json:"group_two"`
 }
 
 func (q *Question) ToJSONQuestion() *JSONQuestion {
-	jsonQuestion := &JSONQuestion{Type: q.Type, Description: q.Description, Reward: q.Reward, GroupOne: []*JSONPlayer{}, GroupTwo: []*JSONPlayer{}}
+	jsonQuestion := &JSONQuestion{Type: q.Type, Description: q.Description, Choices: q.Choices, Reward: q.Reward, GroupOne: []*JSONPlayer{}, GroupTwo: []*JSONPlayer{}}
 
 	for player, value := range q.Answers {
 		if value == 1 {
@@ -47,7 +49,7 @@ func (q *Question) AwardScores() {
 		for _, player := range twoVoters {
 			player.Score += q.Reward
 		}
-	// Tie
+		// Tie
 	} else {
 		for player := range q.Answers {
 			player.Score += q.Reward

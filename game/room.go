@@ -85,7 +85,7 @@ func (r *Room) NextQuestion() *Question {
 }
 
 func (r *Room) ResetGame() {
-	r.Scene = 1
+	r.Scene = 0
 	r.CurrentQuestion = 0
 	for _, question := range r.Questions {
 		question.Answers = make(map[*Player]int)

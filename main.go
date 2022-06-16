@@ -6,6 +6,7 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/ponbac/majority-wins/game"
 )
@@ -22,12 +23,11 @@ func createRoom(w http.ResponseWriter, r *http.Request) {
 
 	room := game.NewRoom(roomID)
 	rooms[roomID] = room
-	room.Questions = []*game.Question{{Type: "Music", Description: "1 or 2, little human?", Answers: make(map[*game.Player]int), Reward: 2},
-		{Type: "Trivia", Description: "Is KalleK strong 1=YES, 2=NO?", Answers: make(map[*game.Player]int), Reward: 2}}
+	room.Questions = []*game.Question{{Type: "Music", Description: "Är Bobba längre än en hobbit?", Choices: []string{"Ja", "Nej"}, Answers: make(map[*game.Player]int), Reward: 2},
+		{Type: "Trivia", Description: "Vem är starkast, Arnold eller KalleK?", Choices: []string{"Arnold", "KalleK"}, Answers: make(map[*game.Player]int), Reward: 2}}
 	go room.Run()
-	go room.StartGame()
 	log.Println("Created room " + roomID)
-	game.ServeWs(room, name, w, r)
+	game.ServeWs(room, true, name, w, r)
 }
 
 func joinRoom(w http.ResponseWriter, r *http.Request) {
@@ -35,13 +35,14 @@ func joinRoom(w http.ResponseWriter, r *http.Request) {
 	roomID := r.URL.Query().Get("room")
 	if _, ok := rooms[roomID]; ok {
 		room := rooms[roomID]
-		game.ServeWs(room, name, w, r)
+		game.ServeWs(room, false, name, w, r)
 	} else {
 		w.Write([]byte("Room " + roomID + " does not exist!"))
 	}
 }
 
 func main() {
+	rand.Seed(time.Now().UnixNano())
 	port := os.Getenv("PORT")
 	fmt.Println("Fetched from env: ", port)
 	if port == "" {

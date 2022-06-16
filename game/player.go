@@ -33,16 +33,18 @@ var upgrader = websocket.Upgrader{
 }
 
 type Player struct {
-	Name  string
-	Score int
-	Room  *Room
-	Conn  *websocket.Conn
-	send  chan []byte
+	Name     string
+	Score    int
+	IsLeader bool
+	Room     *Room
+	Conn     *websocket.Conn
+	send     chan []byte
 }
 
 type JSONPlayer struct {
-	Name  string `json:"name"`
-	Score int    `json:"score"`
+	Name     string `json:"name"`
+	Score    int    `json:"score"`
+	IsLeader bool   `json:"isLeader"`
 }
 
 type PlayerAction struct {
@@ -51,7 +53,7 @@ type PlayerAction struct {
 }
 
 func (p *Player) ToJSONPlayer() *JSONPlayer {
-	return &JSONPlayer{Name: p.Name, Score: p.Score}
+	return &JSONPlayer{Name: p.Name, Score: p.Score, IsLeader: p.IsLeader}
 }
 
 func (p *Player) Vote(vote int) {
@@ -91,6 +93,10 @@ func (p *Player) readPump() {
 		fmt.Println(p.Name + " performed action {" + action.Action + "} with value " + fmt.Sprint(action.Value))
 		if action.Action == "Vote" {
 			p.Vote(action.Value)
+		} else if action.Action == "Start" {
+			if p.IsLeader && p.Room.Scene == 0 {
+				go p.Room.StartGame()
+			}
 		}
 		//p.Room.broadcast <- p.Room.ToJSON()
 	}
@@ -143,7 +149,7 @@ func (p *Player) writePump() {
 }
 
 // serveWs handles websocket requests from the peer.
-func ServeWs(room *Room, playerName string, w http.ResponseWriter, r *http.Request) {
+func ServeWs(room *Room, isLeader bool, playerName string, w http.ResponseWriter, r *http.Request) {
 	upgrader.CheckOrigin = func(r *http.Request) bool { return true }
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
@@ -151,9 +157,9 @@ func ServeWs(room *Room, playerName string, w http.ResponseWriter, r *http.Reque
 		return
 	}
 	if playerName == "" {
-		playerName = "Player " + fmt.Sprint(len(room.Players) + 1)
+		playerName = "Player " + fmt.Sprint(len(room.Players)+1)
 	}
-	player := &Player{Room: room, Score: 0, Conn: conn, send: make(chan []byte, 256), Name: playerName}
+	player := &Player{Room: room, Score: 0, IsLeader: isLeader, Conn: conn, send: make(chan []byte, 256), Name: playerName}
 	player.Room.register <- player
 
 	// Allow collection of memory referenced by the caller by doing all work in
