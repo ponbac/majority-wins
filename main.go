@@ -6,6 +6,7 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
+	"strconv"
 	"time"
 
 	"github.com/ponbac/majority-wins/data"
@@ -25,6 +26,15 @@ func createRoom(w http.ResponseWriter, r *http.Request) {
 	room := game.NewRoom(roomID)
 	rooms[roomID] = room
 	room.Questions = data.FetchQuestions()
+	nQuestions := r.URL.Query().Get("questions")
+	if nQuestions != "" {
+		n, err := strconv.Atoi(nQuestions)
+		if err != nil {
+			log.Println(err)
+		} else {
+			room.NQuestions = n
+		}
+	}
 	go room.Run()
 	log.Println("Created room " + roomID)
 	game.ServeWs(room, true, name, w, r)

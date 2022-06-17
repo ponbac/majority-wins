@@ -12,6 +12,7 @@ type Room struct {
 	ID              string
 	Players         map[*Player]bool
 	Questions       []*Question
+	NQuestions      int
 	CurrentQuestion int
 	// 0 = not started, 1 = question time, 2 = question results, 3 = game over
 	Scene  int
@@ -43,6 +44,7 @@ func NewRoom(roomID string) *Room {
 		Players:         make(map[*Player]bool),
 		ID:              roomID,
 		Questions:       []*Question{},
+		NQuestions:      15,
 		CurrentQuestion: 0,
 		Scene:           0,
 		Active:          true,
@@ -81,6 +83,13 @@ func (r *Room) RemovePlayer(player *Player) {
 	}
 }
 
+func (r *Room) selectNQuestions(num int) {
+	if len(r.Questions) < num {
+		num = len(r.Questions)
+	}
+	r.Questions = r.Questions[:num]
+}
+
 func (r *Room) shuffleQuestions() {
 	rand.Seed(time.Now().UnixNano())
 	for i := len(r.Questions) - 1; i > 0; i-- {
@@ -104,7 +113,7 @@ func (r *Room) parseQuestions() {
 		for player2 == player1 {
 			player2 = playerNames[rand.Intn(len(playerNames))]
 		}
-		
+
 		// TODO: Might add this support later...
 		// player3 := playerNames[rand.Intn(len(playerNames))]
 		// for player3 == player1 || player3 == player2 {
@@ -168,6 +177,7 @@ func (r *Room) BroadcastRoomState() {
 func (r *Room) StartGame() {
 	r.parseQuestions()
 	r.shuffleQuestions()
+	r.selectNQuestions(r.NQuestions)
 	r.Scene = 1
 	r.BroadcastRoomState()
 
