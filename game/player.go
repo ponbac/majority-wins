@@ -1,6 +1,7 @@
 package game
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"net/http"
@@ -153,16 +154,24 @@ func (p *Player) writePump() {
 }
 
 // serveWs handles websocket requests from the peer.
-func ServeWs(room *Room, isLeader bool, playerName string, w http.ResponseWriter, r *http.Request) {
+func ServeWs(room *Room, isLeader bool, playerName string, w http.ResponseWriter, r *http.Request) error {
+	// if name is already taken
+	for p := range room.Players {
+		if p.Name == playerName {
+			return errors.New("name already taken")
+		}
+	}
+
 	upgrader.CheckOrigin = func(r *http.Request) bool { return true }
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		log.Println(err)
-		return
+		return err
 	}
 	if playerName == "" {
 		playerName = "Player " + fmt.Sprint(len(room.Players)+1)
 	}
+
 	player := &Player{Room: room, Score: 0, IsLeader: isLeader, Conn: conn, send: make(chan []byte, 256), Name: playerName}
 	player.Room.register <- player
 
@@ -170,4 +179,5 @@ func ServeWs(room *Room, isLeader bool, playerName string, w http.ResponseWriter
 	// new goroutines.
 	go player.writePump()
 	go player.readPump()
+	return nil
 }

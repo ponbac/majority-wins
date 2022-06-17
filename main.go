@@ -8,8 +8,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/ponbac/majority-wins/game"
 	"github.com/ponbac/majority-wins/data"
+	"github.com/ponbac/majority-wins/game"
 )
 
 // Holds all rooms, key = room ID, value = room pointer
@@ -41,7 +41,10 @@ func joinRoom(w http.ResponseWriter, r *http.Request) {
 	roomID := r.URL.Query().Get("room")
 	if _, ok := rooms[roomID]; ok {
 		room := rooms[roomID]
-		game.ServeWs(room, false, name, w, r)
+		err := game.ServeWs(room, false, name, w, r)
+		if err != nil {
+			w.Write([]byte("Name already taken"))
+		}
 	} else {
 		w.Write([]byte("Room " + roomID + " does not exist!"))
 	}
@@ -78,7 +81,7 @@ func deleteFinishedRooms() {
 			log.Println("Room " + roomID + " is active")
 		}
 	}
-}	
+}
 
 func randomString(n int) string {
 	var letters = []rune("ABCDEFGHJKLMNPQRSTUVWXYZ123456789")
