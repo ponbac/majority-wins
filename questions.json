@@ -38,12 +38,6 @@
     },
     {
       "type": "Misc",
-      "description": "Scat eller barnporr?",
-      "choices": ["Scat", "Barnporr"],
-      "reward": 2
-    },
-    {
-      "type": "Misc",
       "description": "Bästa serien?",
       "choices": ["The Wire", "Game of Thrones"],
       "reward": 2
@@ -82,6 +76,66 @@
       "type": "Misc",
       "description": "En fylla på endast ...",
       "choices": ["Fernet", "Tequila"],
+      "reward": 2
+    },
+    {
+      "type": "Misc",
+      "description": "Skulle {1} och {2} bilda ett bra par?",
+      "choices": ["Absolut", "Aldrig"],
+      "reward": 2
+    },
+    {
+      "type": "Misc",
+      "description": "Skulle {1} och {2} vara bra affärspartners?",
+      "choices": ["Absolut", "Aldrig"],
+      "reward": 2
+    },
+    {
+      "type": "Misc",
+      "description": "Ebba Busch eller Annie Lööf?",
+      "choices": ["Ebba", "Annie"],
+      "reward": 2
+    },
+    {
+      "type": "Misc",
+      "description": "Roligast på fest?",
+      "choices": ["Beer Pong", "Ring of Fire"],
+      "reward": 2
+    },
+    {
+      "type": "Misc",
+      "description": "Utekväll spenderas helst ...",
+      "choices": ["På dansgolvet", "I baren"],
+      "reward": 2
+    },
+    {
+      "type": "Misc",
+      "description": "Bröst eller rumpa?",
+      "choices": ["Bröst", "Rumpa"],
+      "reward": 2
+    },
+    {
+      "type": "Misc",
+      "description": "Vem lyssnar du helst på?",
+      "choices": ["Ed Sheeran", "Eminem"],
+      "reward": 2
+    },
+    {
+      "type": "Misc",
+      "description": "Vem lyssnar du helst på?",
+      "choices": ["Frank Ocean", "Hov1"],
+      "reward": 2
+    },
+    {
+      "type": "Misc",
+      "description": "Vem lyssnar du helst på?",
+      "choices": ["Veronica Maggio", "Ariana Grande"],
+      "reward": 2
+    },
+    {
+      "type": "Misc",
+      "description": "Vem lyssnar du helst på?",
+      "choices": ["Håkan Hellström", "Laleh"],
       "reward": 2
     },
     {
@@ -148,6 +202,12 @@
       "type": "Challenge",
       "description": "Skulle {1} ligga med någon av samma kön för 100,000 kronor?",
       "choices": ["Ja", "Nej"],
+      "reward": 2
+    },
+    {
+      "type": "Challenge",
+      "description": "Vad skulle {1} helst vara?",
+      "choices": ["Döv", "Rullstolsbunden"],
       "reward": 2
     },
     {
@@ -259,6 +319,12 @@
       "reward": 2
     },
     {
+      "type": "VS",
+      "description": "Vem är nördigast?",
+      "choices": ["{1}", "{2}"],
+      "reward": 2
+    },
+    {
       "type": "Travel",
       "description": "Var hade du helst rest?",
       "choices": ["USA", "Japan"],
@@ -280,6 +346,18 @@
       "type": "Travel",
       "description": "Var hade du helst rest?",
       "choices": ["Åre", "Smögen"],
+      "reward": 2
+    },
+    {
+      "type": "Travel",
+      "description": "Var hade du helst rest?",
+      "choices": ["Spanien", "Italien"],
+      "reward": 2
+    },
+    {
+      "type": "Travel",
+      "description": "Var hade du helst rest?",
+      "choices": ["Danmark", "Norge"],
       "reward": 2
     },
     {

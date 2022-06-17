@@ -104,6 +104,16 @@ func (r *Room) parseQuestions() {
 		for player2 == player1 {
 			player2 = playerNames[rand.Intn(len(playerNames))]
 		}
+		
+		// TODO: Might add this support later...
+		// player3 := playerNames[rand.Intn(len(playerNames))]
+		// for player3 == player1 || player3 == player2 {
+		// 	player3 = playerNames[rand.Intn(len(playerNames))]
+		// }
+		// player4 := playerNames[rand.Intn(len(playerNames))]
+		// for player4 == player1 || player4 == player2 || player4 == player3 {
+		// 	player4 = playerNames[rand.Intn(len(playerNames))]
+		// }
 
 		desc := s.ReplaceAll(question.Description, "{1}", player1)
 		desc = s.ReplaceAll(desc, "{2}", player2)
