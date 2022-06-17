@@ -144,7 +144,7 @@ func (r *Room) StartGame() {
 				fmt.Println("Question results")
 				r.Questions[r.CurrentQuestion].AwardScores()
 				r.BroadcastRoomState()
-				time.Sleep(time.Second * 14)
+				time.Sleep(time.Second * 15)
 				if r.NextQuestion() == nil {
 					r.Scene = 3
 				} else {
