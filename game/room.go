@@ -3,6 +3,7 @@ package game
 import (
 	"encoding/json"
 	"fmt"
+	"math/rand"
 	"time"
 )
 
@@ -75,6 +76,14 @@ func (r *Room) RemovePlayer(player *Player) {
 	}
 }
 
+func (r *Room) shuffleQuestions() {
+	rand.Seed(time.Now().UnixNano())
+	for i := len(r.Questions) - 1; i > 0; i-- {
+		j := rand.Intn(i + 1)
+		r.Questions[i], r.Questions[j] = r.Questions[j], r.Questions[i]
+	}
+}
+
 func (r *Room) NextQuestion() *Question {
 	if r.CurrentQuestion >= len(r.Questions)-1 {
 		return nil
@@ -105,6 +114,7 @@ func (r *Room) BroadcastRoomState() {
 }
 
 func (r *Room) StartGame() {
+	r.shuffleQuestions()
 	r.Scene = 1
 	r.BroadcastRoomState()
 
