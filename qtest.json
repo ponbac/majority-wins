@@ -1,0 +1,22 @@
+{
+  "questions": [
+    {
+      "type": "Misc",
+      "description": "Är {1} längre än en hobbit?",
+      "choices": ["Ja", "Nej"],
+      "reward": 2
+    },
+    {
+      "type": "Misc",
+      "description": "Vem är starkast, {1} eller {2}?",
+      "choices": ["{1}", "{2}"],
+      "reward": 2
+    },
+    {
+      "type": "Misc",
+      "description": "Var bor du helst?",
+      "choices": ["Härnösand", "Vemdalen"],
+      "reward": 2
+    }
+  ]
+}

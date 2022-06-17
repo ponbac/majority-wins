@@ -25,6 +25,7 @@ type JSONQuestion struct {
 }
 
 const QUESTIONS_PATH = "questions.json"
+//const QUESTIONS_PATH = "qtest.json"
 
 func FetchQuestions() []*game.Question {
 	var questions []*game.Question
