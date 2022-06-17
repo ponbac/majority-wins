@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/ponbac/majority-wins/game"
+	"github.com/ponbac/majority-wins/data"
 )
 
 // Holds all rooms, key = room ID, value = room pointer
@@ -23,9 +24,7 @@ func createRoom(w http.ResponseWriter, r *http.Request) {
 
 	room := game.NewRoom(roomID)
 	rooms[roomID] = room
-	room.Questions = []*game.Question{{Type: "Misc", Description: "Är Bobba längre än en hobbit?", Choices: []string{"Ja", "Nej"}, Answers: make(map[*game.Player]int), Reward: 2},
-		{Type: "Misc", Description: "Vem är starkast, Arnold eller KalleK?", Choices: []string{"Arnold", "KalleK"}, Answers: make(map[*game.Player]int), Reward: 2},
-		{Type: "Misc", Description: "Var bor du helst?", Choices: []string{"Härnösand", "Vemdalen"}, Answers: make(map[*game.Player]int), Reward: 2}}
+	room.Questions = data.FetchQuestions()
 	go room.Run()
 	log.Println("Created room " + roomID)
 	game.ServeWs(room, true, name, w, r)
@@ -49,9 +48,11 @@ func joinRoom(w http.ResponseWriter, r *http.Request) {
 func main() {
 	rand.Seed(time.Now().UnixNano())
 	port := os.Getenv("PORT")
-	fmt.Println("Fetched from env: ", port)
 	if port == "" {
+		fmt.Println("No PORT in env, using default port 8080")
 		port = "8080"
+	} else {
+		fmt.Println("Using PORT from env: ", port)
 	}
 
 	http.HandleFunc("/", index)

@@ -1,0 +1,46 @@
+{
+  "questions": [
+    {
+      "type": "Misc",
+      "description": "Är Bobba längre än en hobbit?",
+      "choices": ["Ja", "Nej"],
+      "reward": 2
+    },
+    {
+      "type": "Misc",
+      "description": "Vem är starkast, Arnold eller KalleK?",
+      "choices": ["Arnold", "KalleK"],
+      "reward": 2
+    },
+    {
+      "type": "Misc",
+      "description": "Var bor du helst?",
+      "choices": ["Härnösand", "Vemdalen"],
+      "reward": 2
+    },
+    {
+      "type": "Travel",
+      "description": "Var hade du helst rest?",
+      "choices": ["USA", "Japan"],
+      "reward": 2
+    },
+    {
+      "type": "Travel",
+      "description": "Var hade du helst rest?",
+      "choices": ["Mallorca", "Kreta"],
+      "reward": 2
+    },
+    {
+      "type": "Travel",
+      "description": "Var hade du helst rest?",
+      "choices": ["Göteborg", "Stockholm"],
+      "reward": 2
+    },
+    {
+      "type": "Travel",
+      "description": "Var hade du helst rest?",
+      "choices": ["Åre", "Smögen"],
+      "reward": 2
+    }
+  ]
+}
