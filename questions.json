@@ -139,6 +139,18 @@
       "reward": 2
     },
     {
+      "type": "Challenge",
+      "description": "Skulle {1} äta avföring för 20,000 kronor?",
+      "choices": ["Ja", "Nej"],
+      "reward": 2
+    },
+    {
+      "type": "Challenge",
+      "description": "Skulle {1} ligga med någon av samma kön för 100,000 kronor?",
+      "choices": ["Ja", "Nej"],
+      "reward": 2
+    },
+    {
       "type": "VS",
       "description": "Vem är starkast, {1} eller {2}?",
       "choices": ["{1}", "{2}"],
