@@ -35,6 +35,8 @@ func index(w http.ResponseWriter, r *http.Request) {
 }
 
 func joinRoom(w http.ResponseWriter, r *http.Request) {
+	deleteFinishedRooms() // Prevent user to join finished room
+
 	name := r.URL.Query().Get("name")
 	roomID := r.URL.Query().Get("room")
 	if _, ok := rooms[roomID]; ok {
@@ -65,6 +67,18 @@ func main() {
 		log.Fatal("ListenAndServe:", err)
 	}
 }
+
+// TODO: This does not work?
+func deleteFinishedRooms() {
+	for roomID, room := range rooms {
+		if !room.Active {
+			log.Println("Deleted room " + roomID)
+			delete(rooms, roomID)
+		} else {
+			log.Println("Room " + roomID + " is active")
+		}
+	}
+}	
 
 func randomString(n int) string {
 	var letters = []rune("ABCDEFGHJKLMNPQRSTUVWXYZ123456789")

@@ -13,7 +13,8 @@ type Room struct {
 	Questions       []*Question
 	CurrentQuestion int
 	// 0 = not started, 1 = question time, 2 = question results, 3 = game over
-	Scene int
+	Scene  int
+	Active bool
 
 	// Inbound messages from the clients.
 	broadcast chan []byte
@@ -21,6 +22,8 @@ type Room struct {
 	register chan *Player
 	// Unregister requests from clients.
 	unregister chan *Player
+	// Kill room if true
+	kill chan bool
 }
 
 type JSONRoom struct {
@@ -41,6 +44,7 @@ func NewRoom(roomID string) *Room {
 		Questions:       []*Question{},
 		CurrentQuestion: 0,
 		Scene:           0,
+		Active:          true,
 	}
 }
 
@@ -150,15 +154,15 @@ func (r *Room) StartGame() {
 			case 3:
 				prevScene = 3
 				fmt.Println("Game over")
+				r.Active = false
 				//time.Sleep(time.Second * 5)
-				r.ResetGame()
 			}
 			// TODO: Should it work like this?
-			if r.Scene == 0 {
-				fmt.Println("Quitting room " + r.ID)
-				for player := range r.Players {
-					r.RemovePlayer(player)
-				}
+			if r.Scene == 3 {
+				r.Active = false
+				r.BroadcastRoomState()
+				fmt.Println("Shutting down room " + r.ID)
+				r.kill <- true
 				break
 			}
 			//fmt.Println("Broadcasting scene! curr: " + fmt.Sprint(r.Scene) + " prev: " + fmt.Sprint(prevScene))
@@ -174,7 +178,9 @@ func (r *Room) Run() {
 		case player := <-r.register:
 			r.AddPlayer(player)
 		case player := <-r.unregister:
-			r.RemovePlayer(player)
+			if r.Scene != 3 {
+				r.RemovePlayer(player)
+			}
 		case message := <-r.broadcast:
 			for player := range r.Players {
 				select {
@@ -183,6 +189,12 @@ func (r *Room) Run() {
 					close(player.send)
 					delete(r.Players, player)
 				}
+			}
+		// TODO: This never triggers?
+		case kill := <-r.kill:
+			if kill {
+				fmt.Println("Killing room " + r.ID)
+				return
 			}
 		}
 	}
