@@ -98,6 +98,18 @@
     },
     {
       "type": "Misc",
+      "description": "Bättre serie?",
+      "choices": ["Grey's Anatomy", "House"],
+      "reward": 2
+    },
+    {
+      "type": "Misc",
+      "description": "Bättre fotbollsspelare?",
+      "choices": ["Messi", "C. Ronaldo"],
+      "reward": 2
+    },
+    {
+      "type": "Misc",
       "description": "Roligast på fest?",
       "choices": ["Beer Pong", "Ring of Fire"],
       "reward": 2
@@ -136,6 +148,12 @@
       "type": "Misc",
       "description": "Vem lyssnar du helst på?",
       "choices": ["Håkan Hellström", "Laleh"],
+      "reward": 2
+    },
+    {
+      "type": "Misc",
+      "description": "Bättre sport?",
+      "choices": ["Fotboll", "Hockey"],
       "reward": 2
     },
     {
@@ -321,6 +339,18 @@
     {
       "type": "VS",
       "description": "Vem är nördigast?",
+      "choices": ["{1}", "{2}"],
+      "reward": 2
+    },
+    {
+      "type": "VS",
+      "description": "Vem skulle du helst ha med dig på en öde ö?",
+      "choices": ["{1}", "{2}"],
+      "reward": 2
+    },
+    {
+      "type": "VS",
+      "description": "Vem är mest vältränad?",
       "choices": ["{1}", "{2}"],
       "reward": 2
     },
