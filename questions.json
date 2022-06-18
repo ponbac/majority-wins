@@ -44,6 +44,12 @@
     },
     {
       "type": "Misc",
+      "description": "Kontorsjobb?",
+      "choices": ["Ja, tack", "Nej, aldrig"],
+      "reward": 2
+    },
+    {
+      "type": "Misc",
       "description": "Vilken öl föredrar du?",
       "choices": ["Norrlands", "Mariestad"],
       "reward": 2
@@ -152,6 +158,12 @@
     },
     {
       "type": "Misc",
+      "description": "Godaste drinken?",
+      "choices": ["Gin & Tonic", "Mojito"],
+      "reward": 2
+    },
+    {
+      "type": "Misc",
       "description": "Utekväll spenderas helst ...",
       "choices": ["På dansgolvet", "I baren"],
       "reward": 2
@@ -255,6 +267,12 @@
     {
       "type": "Challenge",
       "description": "Skulle {1} ta notan på första dejten?",
+      "choices": ["Ja", "Nej"],
+      "reward": 2
+    },
+    {
+      "type": "Challenge",
+      "description": "Kommer {1} bli för full ikväll?",
       "choices": ["Ja", "Nej"],
       "reward": 2
     },
