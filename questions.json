@@ -2,8 +2,26 @@
   "questions": [
     {
       "type": "Misc",
-      "description": "Är Bobba längre än en hobbit?",
+      "description": "Är {1} längre än en hobbit?",
       "choices": ["Ja", "Nej"],
+      "reward": 2
+    },
+    {
+      "type": "Misc",
+      "description": "Vad föredrar du?",
+      "choices": ["SMS", "Snapchat"],
+      "reward": 2
+    },
+    {
+      "type": "Misc",
+      "description": "Din partner kan endast prata detta språk, vilket?",
+      "choices": ["Engelska", "Norska"],
+      "reward": 2
+    },
+    {
+      "type": "Misc",
+      "description": "Vad föredrar du?",
+      "choices": ["Instagram", "TikTok"],
       "reward": 2
     },
     {
@@ -398,6 +416,18 @@
     },
     {
       "type": "VS",
+      "description": "Vem är mest konflikträdd?",
+      "choices": ["{1}", "{2}"],
+      "reward": 2
+    },
+    {
+      "type": "VS",
+      "description": "Vem är mest amerikansk?",
+      "choices": ["{1}", "{2}"],
+      "reward": 2
+    },
+    {
+      "type": "VS",
       "description": "Vem målar bäst?",
       "choices": ["{1}", "{2}"],
       "reward": 2
@@ -495,6 +525,12 @@
     {
       "type": "VS",
       "description": "Vem är mest vältränad?",
+      "choices": ["{1}", "{2}"],
+      "reward": 2
+    },
+    {
+      "type": "VS",
+      "description": "Vem skulle mest troligen köpa något av en telefonförsäljare?",
       "choices": ["{1}", "{2}"],
       "reward": 2
     },
