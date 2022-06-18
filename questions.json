@@ -56,6 +56,12 @@
     },
     {
       "type": "Misc",
+      "description": "Vilket vin?",
+      "choices": ["Vitt", "Rött"],
+      "reward": 2
+    },
+    {
+      "type": "Misc",
       "description": "Bästa serien?",
       "choices": ["The Wire", "Game of Thrones"],
       "reward": 2
@@ -64,6 +70,12 @@
       "type": "Misc",
       "description": "Bästa serien?",
       "choices": ["På Spåret", "SKAM"],
+      "reward": 2
+    },
+    {
+      "type": "Misc",
+      "description": "Vilken genre är bäst?",
+      "choices": ["BDSM", "Hentai"],
       "reward": 2
     },
     {
@@ -128,6 +140,12 @@
     },
     {
       "type": "Misc",
+      "description": "Bättre fotbollsspelare?",
+      "choices": ["Isak", "Kulusevski"],
+      "reward": 2
+    },
+    {
+      "type": "Misc",
       "description": "Roligast på fest?",
       "choices": ["Beer Pong", "Ring of Fire"],
       "reward": 2
@@ -142,6 +160,12 @@
       "type": "Misc",
       "description": "Bröst eller rumpa?",
       "choices": ["Bröst", "Rumpa"],
+      "reward": 2
+    },
+    {
+      "type": "Misc",
+      "description": "Vilket operativsystem?",
+      "choices": ["iOS", "Android"],
       "reward": 2
     },
     {
@@ -525,6 +549,24 @@
     {
       "type": "VS",
       "description": "Vem är mest vältränad?",
+      "choices": ["{1}", "{2}"],
+      "reward": 2
+    },
+    {
+      "type": "VS",
+      "description": "Sämst förlorare?",
+      "choices": ["{1}", "{2}"],
+      "reward": 2
+    },
+    {
+      "type": "VS",
+      "description": "Bäst på att ragga?",
+      "choices": ["{1}", "{2}"],
+      "reward": 2
+    },
+    {
+      "type": "VS",
+      "description": "Om min bil går sönder så vill jag att ... lagar den.",
       "choices": ["{1}", "{2}"],
       "reward": 2
     },
