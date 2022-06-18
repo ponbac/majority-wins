@@ -157,6 +157,42 @@
       "reward": 2
     },
     {
+      "type": "Misc",
+      "description": "Vad reser du helst en lång sträcka med?",
+      "choices": ["Bil", "Tåg"],
+      "reward": 2
+    },
+    {
+      "type": "Misc",
+      "description": "Vad äter du helst?",
+      "choices": ["Tacos", "Sushi"],
+      "reward": 2
+    },
+    {
+      "type": "Misc",
+      "description": "Typ av semester?",
+      "choices": ["Solresa", "Stadsresa"],
+      "reward": 2
+    },
+    {
+      "type": "Misc",
+      "description": "Vilken typ av bostad?",
+      "choices": ["Lägenhet", "Villa"],
+      "reward": 2
+    },
+    {
+      "type": "Misc",
+      "description": "Vad hade du helst haft som husdjur?",
+      "choices": ["Orm", "Fågel"],
+      "reward": 2
+    },
+    {
+      "type": "Misc",
+      "description": "Vad hade du helst haft som husdjur?",
+      "choices": ["Spindel", "Råtta"],
+      "reward": 2
+    },
+    {
       "type": "Challenge",
       "description": "Kan {1} göra 20 armhävningar?",
       "choices": ["Ja", "Nej"],
@@ -200,6 +236,18 @@
     },
     {
       "type": "Challenge",
+      "description": "{1} har läst en bok detta år.",
+      "choices": ["Sant", "Falskt"],
+      "reward": 2
+    },
+    {
+      "type": "Challenge",
+      "description": "{1} beställer 20-pack nuggets från McDonalds.",
+      "choices": ["Sant", "Falskt"],
+      "reward": 2
+    },
+    {
+      "type": "Challenge",
       "description": "Föredrar {1} intelligens eller utseende?",
       "choices": ["Intelligens", "Utseende"],
       "reward": 2
@@ -226,6 +274,66 @@
       "type": "Challenge",
       "description": "Vad skulle {1} helst vara?",
       "choices": ["Döv", "Rullstolsbunden"],
+      "reward": 2
+    },
+    {
+      "type": "Challenge",
+      "description": "Vem skulle du lita mest på gällande en investering?",
+      "choices": ["{1}", "Dagens horoskop"],
+      "reward": 2
+    },
+    {
+      "type": "VS",
+      "description": "Vad är störst?",
+      "choices": ["{2}s rumpa", "{1}s ego"],
+      "reward": 2
+    },
+    {
+      "type": "VS",
+      "description": "Vad är störst?",
+      "choices": ["{2}s biceps", "{1}s framtida skulder"],
+      "reward": 2
+    },
+    {
+      "type": "VS",
+      "description": "Vad är störst?",
+      "choices": ["{2}s porrberoende", "{1}s garderob"],
+      "reward": 2
+    },
+    {
+      "type": "VS",
+      "description": "Vem kommer leva längst?",
+      "choices": ["{1}", "{2}"],
+      "reward": 2
+    },
+    {
+      "type": "VS",
+      "description": "Vems barn kommer bli fotbollsproffs?",
+      "choices": ["{1}", "{2}"],
+      "reward": 2
+    },
+    {
+      "type": "VS",
+      "description": "Vems barn kommer bli nobelpristagare?",
+      "choices": ["{1}", "{2}"],
+      "reward": 2
+    },
+    {
+      "type": "VS",
+      "description": "Vems barn kommer bli mest bortskämda?",
+      "choices": ["{1}", "{2}"],
+      "reward": 2
+    },
+    {
+      "type": "VS",
+      "description": "Vems barn kommer bli jobbigast?",
+      "choices": ["{1}", "{2}"],
+      "reward": 2
+    },
+    {
+      "type": "VS",
+      "description": "Vem kommer bli den bästa föräldern?",
+      "choices": ["{1}", "{2}"],
       "reward": 2
     },
     {
@@ -344,6 +452,42 @@
     },
     {
       "type": "VS",
+      "description": "Vem behöver dricka mer?",
+      "choices": ["{1}", "{2}"],
+      "reward": 2
+    },
+    {
+      "type": "VS",
+      "description": "Vem behöver börja träna?",
+      "choices": ["{1}", "{2}"],
+      "reward": 2
+    },
+    {
+      "type": "VS",
+      "description": "Vem är bäst på kubb?",
+      "choices": ["{1}", "{2}"],
+      "reward": 2
+    },
+    {
+      "type": "VS",
+      "description": "Vem är mest svensk?",
+      "choices": ["{1}", "{2}"],
+      "reward": 2
+    },
+    {
+      "type": "VS",
+      "description": "Vem är mest vänster?",
+      "choices": ["{1}", "{2}"],
+      "reward": 2
+    },
+    {
+      "type": "VS",
+      "description": "Vem är mest höger?",
+      "choices": ["{1}", "{2}"],
+      "reward": 2
+    },
+    {
+      "type": "VS",
       "description": "Vem skulle du helst ha med dig på en öde ö?",
       "choices": ["{1}", "{2}"],
       "reward": 2
@@ -388,6 +532,12 @@
       "type": "Travel",
       "description": "Var hade du helst rest?",
       "choices": ["Danmark", "Norge"],
+      "reward": 2
+    },
+    {
+      "type": "Travel",
+      "description": "Var hade du helst rest?",
+      "choices": ["Australien", "Nya Zeeland"],
       "reward": 2
     },
     {
