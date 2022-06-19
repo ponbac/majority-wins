@@ -183,6 +183,13 @@ func (r *Room) StartGame() {
 
 	prevScene := 0
 	for {
+		if len(r.Players) == 0 {
+			log.Debug().Msg("Room [" + r.ID + "]: No players left, killing room...")
+			r.Active = false
+			r.kill <- true
+			return
+		}
+
 		// Move to results screen if every player has answered
 		if len(r.Questions[r.CurrentQuestion].Answers) == len(r.Players) && r.Scene == 1 && len(r.Players) > 0 { // TODO: Remove len(r.Players) > 0
 			r.Scene = 2
