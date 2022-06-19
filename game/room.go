@@ -2,10 +2,11 @@ package game
 
 import (
 	"encoding/json"
-	"fmt"
 	"math/rand"
 	s "strings"
 	"time"
+
+	"github.com/rs/zerolog/log"
 )
 
 type Room struct {
@@ -63,14 +64,14 @@ func (r *Room) ToJSON() []byte {
 
 	b, err := json.Marshal(jsonRoom)
 	if err != nil {
-		fmt.Println(err)
+		log.Error().Err(err).Msg("Failed to marshal room to JSON")
 	}
 	return b
 }
 
 func (r *Room) AddPlayer(player *Player) {
 	r.Players[player] = true
-	fmt.Println("Added " + player.Name + " to room " + r.ID)
+	log.Debug().Msg("Room [" + r.ID + "]: Added " + player.Name)
 	r.BroadcastRoomState()
 }
 
@@ -78,7 +79,7 @@ func (r *Room) RemovePlayer(player *Player) {
 	if _, ok := r.Players[player]; ok {
 		delete(r.Players, player)
 		close(player.send)
-		fmt.Println("Removed " + player.Name + " from room " + r.ID)
+		log.Debug().Msg("Room [" + r.ID + "]: Removed " + player.Name)
 		r.BroadcastRoomState()
 	}
 }
@@ -195,11 +196,11 @@ func (r *Room) StartGame() {
 			// Question time
 			case 1:
 				prevScene = 1
-				fmt.Println("Starting question " + r.Questions[r.CurrentQuestion].Description)
+				log.Debug().Msg("Room [" + r.ID + "]: Starting question (" + r.Questions[r.CurrentQuestion].Description + ")")
 			// Question results
 			case 2:
 				prevScene = 2
-				fmt.Println("Question results")
+				log.Debug().Msg("Room [" + r.ID + "]: Displaying results for (" + r.Questions[r.CurrentQuestion].Description + ")")
 				r.Questions[r.CurrentQuestion].AwardScores()
 				r.BroadcastRoomState()
 				time.Sleep(time.Second * 15)
@@ -211,7 +212,7 @@ func (r *Room) StartGame() {
 			// Game over
 			case 3:
 				prevScene = 3
-				fmt.Println("Game over")
+				log.Debug().Msg("Room [" + r.ID + "]: Game over")
 				r.Active = false
 				//time.Sleep(time.Second * 5)
 			}
@@ -219,11 +220,10 @@ func (r *Room) StartGame() {
 			if r.Scene == 3 {
 				r.Active = false
 				r.BroadcastRoomState()
-				fmt.Println("Shutting down room " + r.ID)
+				log.Debug().Msg("Room [" + r.ID + "]: Shutting down...")
 				r.kill <- true
 				break
 			}
-			//fmt.Println("Broadcasting scene! curr: " + fmt.Sprint(r.Scene) + " prev: " + fmt.Sprint(prevScene))
 			r.BroadcastRoomState()
 		}
 		time.Sleep(500 * time.Millisecond)
@@ -251,7 +251,7 @@ func (r *Room) Run() {
 		// TODO: This never triggers?
 		case kill := <-r.kill:
 			if kill {
-				fmt.Println("Killing room " + r.ID)
+				log.Debug().Msg("Room [" + r.ID + "]: Trying to kill...")
 				return
 			}
 		}

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"log"
 	"math/rand"
 	"net/http"
 	"os"
@@ -10,6 +9,8 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
 
 	"github.com/ponbac/majority-wins/data"
 	"github.com/ponbac/majority-wins/game"
@@ -32,17 +33,18 @@ func createRoom(c echo.Context) error {
 	if nQuestions != "" {
 		n, err := strconv.Atoi(nQuestions)
 		if err != nil {
-			log.Println(err)
+			log.Error().Err(err).Msg("Could not convert questions param to int")
 		} else {
 			room.NQuestions = n
 		}
 	}
 	go room.Run()
-	//log.Println("Created room " + roomID)
+	log.Debug().Msg("Room [" + roomID + "]: Created")
 	err := game.ServeWs(room, true, name, c.Response(), c.Request())
 	if err != nil {
 		return c.String(http.StatusInternalServerError, err.Error())
 	}
+
 	return c.String(http.StatusOK, "Created room "+roomID)
 }
 
@@ -63,6 +65,7 @@ func joinRoom(c echo.Context) error {
 		// Most probably non unique name used
 		return c.String(http.StatusInternalServerError, err.Error())
 	}
+
 	return c.String(http.StatusOK, "Joined room "+roomID)
 }
 
@@ -73,10 +76,7 @@ func index(c echo.Context) error {
 }
 
 func main() {
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080"
-	}
+	zerolog.SetGlobalLevel(zerolog.DebugLevel)
 
 	e := echo.New()
 
@@ -93,27 +93,22 @@ func main() {
 	e.GET("/new", createRoom)
 	e.GET("/join", joinRoom)
 
+	port := os.Getenv("PORT")
+	if port == "" {
+		log.Info().Msg("No port specified, defaulting to 8080")
+		port = "8080"
+	}
 	e.Logger.Fatal(e.Start(":" + port))
-
-	// http.HandleFunc("/", index)
-	// http.HandleFunc("/new", createRoom)
-	// http.HandleFunc("/join", joinRoom)
-
-	// log.Println("Starting server on http://localhost" + ":" + port)
-	// err := http.ListenAndServe(":"+port, nil)
-	// if err != nil {
-	// 	log.Fatal("ListenAndServe:", err)
-	// }
 }
 
 // TODO: This does not work?
 func deleteFinishedRooms() {
 	for roomID, room := range rooms {
 		if !room.Active {
-			log.Println("Deleted room " + roomID)
+			log.Debug().Msg("Deleted room [" + roomID + "]")
 			delete(rooms, roomID)
 		} else {
-			//log.Println("Room " + roomID + " is active")
+			log.Debug().Msg("Room [" + roomID + "]: Active")
 		}
 	}
 }

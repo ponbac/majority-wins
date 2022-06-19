@@ -3,11 +3,11 @@ package game
 import (
 	"errors"
 	"fmt"
-	"log"
 	"net/http"
 	"time"
-	
+
 	"github.com/gorilla/websocket"
+	"github.com/rs/zerolog/log"
 )
 
 const (
@@ -88,12 +88,12 @@ func (p *Player) readPump() {
 		err := p.Conn.ReadJSON(&action)
 		if err != nil {
 			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
-				log.Printf("error: %v", err)
+				log.Warn().Err(err).Msg("Room [" + p.Room.ID + "]: Player " + p.Name + " websocket closed unexpectedly")
 			}
-			log.Printf("error: %v", err)
+			log.Warn().Err(err).Msg("Room [" + p.Room.ID + "]: Could not read JSON message from player " + p.Name)
 			break
 		}
-		fmt.Println(p.Name + " performed action {" + action.Action + "} with value " + fmt.Sprint(action.Value))
+		log.Debug().Msg("Room [" + p.Room.ID + "]: " + p.Name + " performed action {" + action.Action + "} with value " + fmt.Sprint(action.Value))
 		if action.Action == "Vote" {
 			p.Vote(action.Value)
 		} else if action.Action == "Start" {
@@ -165,7 +165,7 @@ func ServeWs(room *Room, isLeader bool, playerName string, w http.ResponseWriter
 	upgrader.CheckOrigin = func(r *http.Request) bool { return true }
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
-		log.Println(err)
+		log.Error().Err(err).Msg("Could not upgrade websocket connection")
 		return err
 	}
 	if playerName == "" {
