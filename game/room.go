@@ -160,7 +160,6 @@ func (r *Room) ResetGame() {
 	for _, question := range r.Questions {
 		question.Answers = make(map[*Player]int)
 	}
-	//r.BroadcastRoomState()
 }
 
 func (r *Room) BroadcastRoomState() {

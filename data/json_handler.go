@@ -8,8 +8,6 @@ import (
 	"io/ioutil"
 	"os"
 
-	//"strconv"
-
 	"github.com/ponbac/majority-wins/game"
 )
 
@@ -30,18 +28,10 @@ const QUESTIONS_PATH = "questions.json"
 func FetchQuestions() []*game.Question {
 	var questions []*game.Question
 
-	byteValue := readJson(QUESTIONS_PATH)
-
-	// we initialize our Users array
 	var jsonQuestions JSONQuestions
-
-	// we unmarshal our byteArray which contains our
-	// jsonFile's content into 'users' which we defined above
+	byteValue := readJson(QUESTIONS_PATH)
 	json.Unmarshal(byteValue, &jsonQuestions)
 
-	// we iterate through every user within our users array and
-	// print out the user Type, their name, and their facebook url
-	// as just an example
 	for _, q := range jsonQuestions.Questions {
 		questions = append(questions, &game.Question{Type: q.Type, Description: q.Description, Choices: q.Choices, Reward: q.Reward, Answers: make(map[*game.Player]int)})
 	}
