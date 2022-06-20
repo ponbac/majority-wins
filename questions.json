@@ -98,6 +98,18 @@
     },
     {
       "type": "Misc",
+      "description": "Vem skulle du helst ta en öl med?",
+      "choices": ["Zlatan", "Håkan Juholt"],
+      "reward": 2
+    },
+    {
+      "type": "Misc",
+      "description": "Vilken dag är roligast?",
+      "choices": ["Midsommar", "Julafton"],
+      "reward": 2
+    },
+    {
+      "type": "Misc",
       "description": "Vad kollar du helst på en lördagkväll?",
       "choices": ["Anime", "Romantiska komedier"],
       "reward": 2
@@ -105,7 +117,7 @@
     {
       "type": "Misc",
       "description": "Vad kollar du helst på en lördagkväll?",
-      "choices": ["Paradise Hotel", "II Världskriget i färg"],
+      "choices": ["Paradise Hotel", "Andra världskriget i färg"],
       "reward": 2
     },
     {
@@ -358,6 +370,12 @@
       "type": "VS",
       "description": "Vad är störst?",
       "choices": ["{2}s porrberoende", "{1}s garderob"],
+      "reward": 2
+    },
+    {
+      "type": "VS",
+      "description": "Vem snarkar högst?",
+      "choices": ["{2}", "{1}"],
       "reward": 2
     },
     {
