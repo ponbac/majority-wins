@@ -6,6 +6,7 @@ import (
 	"os"
 	"strconv"
 	"time"
+	s "strings"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -58,7 +59,7 @@ func joinRoom(c echo.Context) error {
 		return c.String(http.StatusNotFound, "Room "+roomID+" not found")
 	}
 
-	name := c.QueryParam("name")
+	name := s.TrimSpace(c.QueryParam("name"))
 	room := rooms[roomID]
 	err := game.ServeWs(room, false, name, c.Response(), c.Request())
 	if err != nil {
